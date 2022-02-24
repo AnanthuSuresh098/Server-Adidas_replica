@@ -85,7 +85,7 @@ router.get(
 
 router.get("/users", async (req, res) => {
   try {
-    let user = await Users.find().lean().exec();
+    let user = await Users.find().populate("cartItems").lean().exec();
     // if(user === null){
     //      return res.status(401).send({res:"User doesn't exists"});
     //  }
