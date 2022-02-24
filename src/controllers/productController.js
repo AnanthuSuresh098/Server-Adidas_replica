@@ -48,4 +48,24 @@ router.patch(
   }
 );
 
+router.get("/men", async (req, res) => {
+  try {
+    const products = await Products.find({category:"Men"}).lean().exec();
+    console.log(products);
+    return res.send(products);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
+router.get("/women", async (req, res) => {
+  try {
+    const products = await Products.find({category:"women"}).lean().exec();
+    console.log(products);
+    return res.send(products);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
 module.exports = router;

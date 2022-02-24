@@ -1,9 +1,11 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
+    username: { type: String, required: false },
+    email: { type: String, required: false },
+    password:{ type: String, required: false },
     cartItems:[{ type: mongoose.Schema.Types.ObjectId, ref: "product", required: false },],
   },
   {
@@ -12,4 +14,11 @@ const userSchema = new Schema(
   }
 );
 
-module.exports = model("user", userSchema);
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = bcrypt.hashSync(this.password, 8);
+  return next();
+});
+
+const Users = mongoose.model("user", userSchema);
+module.exports = Users
