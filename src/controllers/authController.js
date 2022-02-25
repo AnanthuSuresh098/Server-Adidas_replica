@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 router.get("/login", async (req, res) => {
   try {
-    let user = await Users.findOne({email:req.body.email}).lean().exec();
+    let user = await Users.findOne({email:req.params.email}).lean().exec();
     if(user === null){
          return res.status(401).send({res:"User doesn't exists"});
      }
