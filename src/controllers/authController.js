@@ -24,8 +24,8 @@ router.get("/login", async (req, res) => {
   }
 });
 
-router.post(
-  "/signup",
+router.get(
+  "/signup/:username/:email/:password",
   body('email').isEmail(),
   body('password').isLength({ min: 5 }),
   async (req, res) => {
@@ -37,13 +37,19 @@ router.post(
     //    return res.status(400).json({ errors: errors.array() });
     //  }
 
-    var user = await Users.find({email:req.body.email});
+    var user = await Users.findOne({email:req.params.email});
     console.log(user);
     if(user !== null){
          return res.status(401).send("User exists login");
      }
 
-      user = await Users.create(req.body);
+     const body = {
+      username:req.params.username,
+      email:req.params.email,
+      password:req.params.password
+    }
+
+      user = await Users.create(body);
 
      const token = newToken(user);
 
@@ -82,6 +88,7 @@ router.get(
     }
   }
 );
+
 
 router.get("/users", async (req, res) => {
   try {
