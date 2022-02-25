@@ -4,8 +4,8 @@ const Products = require("../models/product.model");
 
 const router = express.Router();
 
-router.patch(
-  "additem/:id/:product",
+router.get(
+  "/additem/:id/:product",
   async (req, res) => {
     try {
      const user = await Users.findById(req.params.id).lean().exec();
@@ -37,8 +37,8 @@ router.patch(
 //    );
 
 
-router.delete(
-     "deleteitem/:id/:product",
+router.get(
+     "/deleteitem/:id/:product",
      async (req, res) => {
        try {
           const user = await Users.findById(req.params.id).populate("cartItems").lean().exec();
@@ -46,8 +46,8 @@ router.delete(
           let arr = [];
           user.cartItems.map((a)=>{if(a.title === productdata.title){
         }else{arr.push(a._id)}});
-         const cart = await Users.findByIdAndUpdate(req.params.id, {cartItems:arr}).lean().exec();
-         return res.send({ cart });
+         const cart = await Users.findByIdAndUpdate(req.params.id, {cartItems:arr}).populate("cartItems").lean().exec();
+         return res.send(cart.cartItems);
        } catch (err) {
          return res.status(500).send(err);
        }

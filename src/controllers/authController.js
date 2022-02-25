@@ -31,14 +31,14 @@ router.post(
   async (req, res) => {
     try {
      const errors = validationResult(req);
-     // console.log(errors);
+     console.log(errors);
 
-     // if (!errors.isEmpty()) {
-     //   return res.status(400).json({ errors: errors.array() });
-     // }
+    //  if (!errors.isEmpty()) {
+    //    return res.status(400).json({ errors: errors.array() });
+    //  }
 
-     var user = await Users.findOne({email:req.body.email}).lean().exec();
-     console.log(req.body);
+    var user = await Users.find({email:req.body.email});
+    console.log(user);
     if(user !== null){
          return res.status(401).send("User exists login");
      }
