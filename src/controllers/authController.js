@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
-router.get("/login", async (req, res) => {
+router.get("/login/:email/:password", async (req, res) => {
   try {
     let user = await Users.findOne({email:req.params.email}).lean().exec();
     if(user === null){
